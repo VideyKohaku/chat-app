@@ -40,6 +40,7 @@ class UserController {
         try {
             const { name, email, password } = req.body;
 
+            // console.log(req.body);
             // error
             const user = await UserModel.findOne({ email });
             if (user) {

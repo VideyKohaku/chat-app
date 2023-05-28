@@ -7,9 +7,14 @@ import NavBar from "./components/NavBar/NavBar";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import app_styles from "./app.style";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
 
 
 function App() {
+
+    
+    const {user} = useContext(AuthContext)
     return (
         <ThemeProvider theme={theme}>
             <Container
@@ -25,7 +30,7 @@ function App() {
                     disableGutters
                 >
                     <Routes>
-                        <Route path="/" element={<Chat />} />
+                        <Route path="/" element={user?<Chat/> : <Navigate to="/login"/>} />
                         <Route path="/login" element={<Login />} />
 
                         <Route path="/register" element={<Register />} />
