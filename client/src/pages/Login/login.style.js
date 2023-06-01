@@ -34,7 +34,7 @@ const login_styles = {
         // backgroundColor: "aqua",
     },
     submitContainer:{
-        flex: 1,
+        flex: 2,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
