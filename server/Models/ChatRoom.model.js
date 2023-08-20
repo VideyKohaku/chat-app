@@ -4,7 +4,12 @@ const COLLECTION_NAME = "chatRoom";
 
 const ChatRoomSchema = new mongoose.Schema(
     {
-        members: Array
+        members: Array,
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            require: true
+        }
     },
     {
         timestamps: true

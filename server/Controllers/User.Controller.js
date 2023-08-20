@@ -81,6 +81,7 @@ class UserController {
             const {email, password} = req.body;
 
             const user = await UserModel.findOne({email})
+            
             if(!email || !password){
                 return res.status(400).json("All field are required...")
             }
