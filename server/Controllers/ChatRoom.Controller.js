@@ -2,6 +2,13 @@ const chatRoomModel = require("../Models/ChatRoom.model");
 const {pickFields} = require("../Utils/pickFields");
 
 class ChatRoomController{
+    static async #formatChatRoom(){}
+
+    static async #getChatRooms(){
+
+    }
+
+    ///////////////////////////////////////////////////////////////////
     // create chat
     static async createChat(req, res){
         try{
@@ -32,11 +39,11 @@ class ChatRoomController{
     static async getUserChats(req, res){
         try{
             const {userId} = req.params;
-            console.log('userId find chat:', userId);
+            console.log('userId find chats:', userId);
             const chats = await chatRoomModel.find({
                 members: {$in: [userId]}
             })
-            
+            console.log('chat found:', chats)
             return res.status(200).json(chats)
 
         }catch(error){

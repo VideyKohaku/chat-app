@@ -1,3 +1,4 @@
+
 const app_styles = {
     body: {
         display: "flex",
@@ -11,6 +12,19 @@ const app_styles = {
         maxWidth: "none",
         marginLeft: 0,
         padding: 0,
+    },
+    bodyChat: {
+        display: "flex",
+        width: "100%",
+        height: "100%",
+
+        position: "relative",
+        top: "62px",
+
+        // margin: 0,
+        marginLeft:0,
+        marginRight:0,
+        padding: 0
     }
 }
 

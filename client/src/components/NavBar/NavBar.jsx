@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Container, Typography, Stack, Button } from "@mui/material"
 import { Link } from 'react-router-dom'
 import navbar_styles from './navbar.style'
@@ -6,8 +6,6 @@ import { AuthContext } from '../../context/AuthContext'
 
 function NavBar() {
     const { user, logoutUser } = useContext(AuthContext);
-
-
 
     return (
         <Container
@@ -30,7 +28,7 @@ function NavBar() {
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                     }}
-                >You are loging as {user ? `${user.name}` : `Guest`}</Typography>
+                >You are logging as {user ? `${user.name}` : `Guest`}</Typography>
             </Container>
             <Stack
                 direction={"row"}
