@@ -120,7 +120,8 @@ class UserController {
     static async findUser(req, res){
         try{
             const {userId} = req.params;
-            const user = await UserController.#getUsers({"_id": userId});
+            const userArray = await UserController.#getUsers({"_id": userId});
+            const user = userArray[0];
 
             // console.log("user: \n", user);
             if (Object.keys(user).length === 0 || user.length === 0){
