@@ -30,10 +30,10 @@ function App() {
                     disableGutters
                 >
                     <Routes>
-                        <Route path="/" element={user?<Chat/> : <Navigate to="/login"/>} />
-                        <Route path="/login" element={<Login />} />
+                        <Route path="/" element={user ? <Chat/> : <Navigate to="/login"/>} />
+                        <Route path="/login" element={user ? <Navigate to="/"/> : <Login/>} />
 
-                        <Route path="/register" element={<Register />} />
+                        <Route path="/register" element={user ? <Navigate to="/"/> : <Register/>} />
                         <Route path="*" element={<Navigate to="/" />} />
                     </Routes>
                 </Container>

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const COLLECTION_NAME = "user";
+const COLLECTION_NAME = "User";
 
 const UserSchema = new mongoose.Schema(
     {

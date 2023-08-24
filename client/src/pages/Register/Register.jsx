@@ -9,7 +9,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 
 function Register() {
-  const { registerInfo,
+  const { 
+    registerInfo,
     updateRegisterInfo,
     registerUser,
     registerError,
@@ -30,9 +31,6 @@ function Register() {
         <Typography
           sx={register_styles.title}
         >Register</Typography>
-        {/* <Typography
-          sx={register_styles.title}
-        >{user.name}</Typography> */}
       </Container>
 
 
