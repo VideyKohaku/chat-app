@@ -9,9 +9,11 @@ const Container = styled.div`
   background-color: antiquewhite;
 `
 
-function ChatBox() {
+function ChatBox({
+  userChats,
+}) {
   return (
-    <Container className="ChatBox container">Chat Box</Container>
+    <Container className="ChatBox container">{userChats?.length > 1 ? (<p>No chat room found</p>) : (<p>Chat room content</p>)}</Container>
   )
 }
 

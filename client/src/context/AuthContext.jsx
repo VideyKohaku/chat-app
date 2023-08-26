@@ -42,7 +42,7 @@ export const AuthContextProvider = ({ children }) => {
         }
         catch (error) {
             setIsRegisterLoading(false);
-            console.log("error from request: ", error);
+            console.log("error from register: ", error);
             setRegisterError(error.data);
             
             // console.log("registerError", registerError);
