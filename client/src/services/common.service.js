@@ -18,11 +18,10 @@ export const postRequest = async (url, body) => {
 }
 
 export const getRequest = async (url) => {
-  console.log(url)
+  // console.log(url)
   try{
     const response = await axios.get(url)
 
-    console.log("get request", response)
     return response.data;
   } catch({response}){
     return response;

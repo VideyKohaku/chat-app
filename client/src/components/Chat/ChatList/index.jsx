@@ -13,6 +13,7 @@ const Container = styled.div`
   height: 100%;
   min-width: 300px;
   // background-color: #eaeaea;
+  border-right: solid 1px #F2F2F2;
 `
 
 const ScrollBox = styled.div`
@@ -44,6 +45,9 @@ const HorizontalScrollBox = styled.div`
   overflow-x: auto;
   box-sizing: border-box;
 
+  border-bottom: solid 1px #F2F2F2;
+  min-height: 86px;
+
   ::-webkit-scrollbar {
     width: 1em;
   }
@@ -59,9 +63,21 @@ function ChatList({
   user,
   potentialChats,
   createChatRoom,
+  updateCurrentChat,
 }) {
-  console.log("Potential Chat:", potentialChats)
-  console.log("userChats:", userChats)
+  // console.log("Potential Chat:", potentialChats)
+  // console.log("userChats:", userChats)
+
+  const handleCreateChatRoom = (user, potentialChat) => () => {
+    console.log("create chat room onClick")
+    createChatRoom(user.id, potentialChat._id)
+  }
+
+  const handleUpdateCurrentChat = (userChatRoom) => () => {
+    console.log("update current room", userChatRoom)
+    updateCurrentChat(userChatRoom)
+  }
+
   return (
     <Container className="ChatList container">
       {isUserChatsLoading ? <Typography>Loading New Connections...</Typography> :
@@ -69,13 +85,10 @@ function ChatList({
           {
             potentialChats.map((potentialChat, index) => {
               return (
-                <div key={index} className="potentailChat-item-wrapper" onClick={() => {
-                  console.log("create chat room onClick")
-                  createChatRoom(user.id, potentialChat._id)
-                }}>
+                <div key={index} className="potentailChat-item-wrapper" onClick={handleCreateChatRoom(user, potentialChat)}>
                   <PotentialChatItem
                     potentialChat={potentialChat}
-                    
+
                   />
                 </div>
               )
@@ -92,6 +105,7 @@ function ChatList({
               return (
                 <div
                   key={index}
+                  onClick={handleUpdateCurrentChat(userChatRoom)}
                 >
                   <ChatItem
                     userChatRoom={userChatRoom}

@@ -1,7 +1,8 @@
-import { baseURL, CHAT_URL } from "./appConfig.service";
+import { baseURL, CHAT_URL, MESSAGE_URL } from "./appConfig.service";
 import { getRequest, postRequest } from "./common.service";
 
 const chatPath = baseURL + CHAT_URL
+const messagePath = baseURL + MESSAGE_URL
 
 // these function only get endpoint, call the api and return the data
 
@@ -31,7 +32,33 @@ const createNewChatRoomAPI = async (endpoint = "/", body) => {
     }
 }
 
+
+const getMessagesAPI = async (endpoint) => {
+    try {
+        const url = messagePath + endpoint
+        const messagesData = await getRequest(url)
+        return messagesData       
+    } catch (error) {
+        console.log("error in get messages:", error)
+        throw error;
+    }
+}
+
+
+const createMessageAPI = async (endpoint, body) => {
+    try {
+        const url = messagePath + endpoint
+        const newMessageData = await postRequest(url, body)
+        return newMessageData
+    } catch (error) {
+        console.log("error in create new message", error)
+        throw error;
+    }
+}
+
 export {
     getUserChatsAPI,
     createNewChatRoomAPI,
+    getMessagesAPI,
+    createMessageAPI
 }

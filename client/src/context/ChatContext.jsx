@@ -1,14 +1,49 @@
 import { createContext, useState, useEffect, useCallback } from "react";
-import { getUserChatsAPI, createNewChatRoomAPI } from "../services/chat.service";
+import { getUserChatsAPI, createNewChatRoomAPI, getMessagesAPI, createMessageAPI } from "../services/chat.service";
 import { getUsersAPI } from "../services/auth.service";
 
 export const ChatContext = createContext();
 
 export const ChatContextProvider = ({ children, user }) => {
-    const [userChats, setUserChats] = useState(null);
+    const [userChats, setUserChats] = useState([]);
     const [isUserChatsLoading, setIsUserChatsLoading] = useState(false);
     const [userChatsError, setUserChatsError] = useState(null);
-    const [potentialChats, setPotentialChats] = useState([])
+    const [potentialChats, setPotentialChats] = useState([]);
+    const [currentChatRoom, setCurrentChatRoom] = useState(null);
+    const [isMessageLoading, setIsMessageLoading] = useState(false);
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState("")
+
+
+    // handle send message on change
+    const updateSendMessage = useCallback((content) => {
+        setNewMessage(content)
+    }, [])
+
+
+    const sendMessage = useCallback((senderId) => {
+        const createNewMessage = async () => {
+            try {
+                console.log("newMessage: ", newMessage)
+                if(newMessage === "") throw "You have not enter anything"
+                const body = {
+                    senderId: senderId,
+                    chatRoomId: currentChatRoom._id,
+                    content: newMessage
+                }
+                console.log("body in send message:", body)
+                const newMessageData = await createMessageAPI("/", body)
+                const newMessagesData = await getMessagesAPI(`/${currentChatRoom._id}`)
+                setMessages(newMessagesData)
+                return newMessageData
+            } catch (error) {
+                console.log("error in send message: ", error)
+            }
+        }
+
+        createNewMessage()
+    }, [newMessage, currentChatRoom])
+
 
     // handle logic when get UserChat
     useEffect(() => {
@@ -65,22 +100,57 @@ export const ChatContextProvider = ({ children, user }) => {
     }, [userChats])
 
 
+    // fetch messages current rooms
+    useEffect(() => {
+        const getMessages = async () => {
+            setIsMessageLoading(true);
+            const messagesData = await getMessagesAPI(`/${currentChatRoom._id}`)
+            setIsMessageLoading(false);
+            if (messagesData.error) {
+                console.log(messagesData.error)
+            }
+            setMessages(messagesData)
+        }
+
+        getMessages()
+    }, [currentChatRoom])
+
+
+    useEffect(() => {
+        if (userChats.length > 0 && currentChatRoom === null) {
+            setCurrentChatRoom(userChats[0])
+        }
+    }, [userChats])
+
+
     const createChatRoom = useCallback(async (firstId, secondId) => {
         try {
             console.log(`firstId:  ${firstId}, secondId: ${secondId}`)
             const body = JSON.stringify({
                 firstId,
                 secondId
-        })
+            })
             const newChatRoom = await createNewChatRoomAPI("/", body)
 
-            setUserChats([...userChats, newChatRoom])
+            setUserChats((prevUserChat) => {
+                if (prevUserChat === null) {
+                    return [newChatRoom]
+                } else {
+                    return [...userChats, newChatRoom]
+                }
+            })
         } catch (error) {
             console.log(error)
             setUserChatsError(error.data)
         }
+    }, [])
 
-    })
+
+    // update current chat room
+    const updateCurrentChat = useCallback((chatRoom) => {
+        setCurrentChatRoom(chatRoom)
+    }, [])
+
 
     return <ChatContext.Provider
         value={{
@@ -88,7 +158,14 @@ export const ChatContextProvider = ({ children, user }) => {
             isUserChatsLoading,
             userChatsError,
             potentialChats,
-            createChatRoom
+            createChatRoom,
+            currentChatRoom,
+            updateCurrentChat,
+            messages,
+            isMessageLoading,
+            updateSendMessage,
+            sendMessage,
+            newMessage,
         }}
     >
         {children}

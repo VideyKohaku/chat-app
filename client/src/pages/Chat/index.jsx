@@ -24,9 +24,16 @@ function Chat() {
     // userChatsError,
     potentialChats,
     createChatRoom,
+    currentChatRoom,
+    updateCurrentChat,
+    messages,
+    isMessageLoading,
+    updateSendMessage,
+    sendMessage,
+    newMessage,
   } = useContext(ChatContext)
 
-  console.log("User Chat:", userChats)
+  console.log("currentChatRoom in chat container:", currentChatRoom)
   return (
     < Container className='chat-body-container'>
       <ChatList
@@ -36,10 +43,18 @@ function Chat() {
         user={user}
         potentialChats={potentialChats}
         createChatRoom={createChatRoom}
+        updateCurrentChat={updateCurrentChat}
       />
       <ChatBox
         className='chat-box'
+        user={user}
         userChats={userChats}
+        currentChatRoom={currentChatRoom}
+        messages={messages}
+        isMessageLoading={isMessageLoading}
+        updateSendMessage={updateSendMessage}
+        sendMessage={sendMessage}
+        newMessage={newMessage}
       />
     </Container >
   )
