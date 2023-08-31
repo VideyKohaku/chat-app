@@ -3,9 +3,9 @@ import styled from "styled-components"
 import { useFetchRecipientUser } from "../../../hooks/useFetchRecipient"
 import { Heading02, BaseHeadline } from "../../../assets/styles/common"
 import InputEmoji from "react-input-emoji"
+import Message from "./Message"
 import { Button } from "antd"
 import SendIcon from '@mui/icons-material/Send';
-import { useState } from "react"
 
 const Container = styled.div`
   display: grid;
@@ -16,13 +16,15 @@ const Container = styled.div`
  
   height: 100%;
   width: 100%;
-  background-color: antiquewhite;
+  // background-color: antiquewhite;
 
   .content {
     grid-area: 2 / 1 / 3 / 2;
     overflow-y: scroll;
+    overflow-x: hidden;
     
-    .message-container{
+    .messages-container{
+
     }
 
 
@@ -45,7 +47,7 @@ const Container = styled.div`
     grid-area: 3 / 1 / 4 / 2;
     padding: 8px 0px;
     background-color: white;
-    border: solid 1px black;
+    // border: solid 1px black;
 
     display: flex;
     flex-direction: row;
@@ -80,7 +82,7 @@ const Container = styled.div`
 
 const ChatBoxHeader = styled.div`
   background-color: white;
-  box-shadow: 0px 0.5px 3px 2px rgba(0, 0, 0, .1),
+  box-shadow: 0px 3px 5px 1px rgba(0, 0, 0, .05);
 
   grid-area: 1 / 1 / 2 / 2; 
   box-sizing: border-box;
@@ -89,6 +91,7 @@ const ChatBoxHeader = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+
 `
 
 
@@ -124,12 +127,14 @@ function ChatBox({
   const renderBody = (messages) => {
     // console.log("message in body", messages)
     return (
-        <div className="message-container">
+        <div className="messages-container">
           {messages && messages.map((message, index) => {
             return (
-              <div key={index} className={`${message.senderId === user.id ? "user" : "recipient"}-message`}>
-                <BaseHeadline>{message.content}</BaseHeadline>
-              </div>
+              <Message 
+                key={index}
+                className={message.senderId === user.id ? "user-message" : "recipient-message"}
+                message={message}
+              />
             )
           })}
         </div>

@@ -28,6 +28,7 @@ const ScrollBox = styled.div`
     display: none;
   }
   .inner-container;
+  
 `
 
 const HorizontalScrollBox = styled.div`
@@ -42,7 +43,7 @@ const HorizontalScrollBox = styled.div`
   padding: 14px;
   gap: 12px;
 
-  overflow-x: auto;
+  overflow-x: scroll;
   box-sizing: border-box;
 
   border-bottom: solid 1px #F2F2F2;

@@ -24,3 +24,7 @@ export const BaseHeadline = styled.p`
     margin: 0;
     padding: 0;
 `
+
+export const Headline01 = styled(BaseHeadline)`
+    font-weight: 400;
+`

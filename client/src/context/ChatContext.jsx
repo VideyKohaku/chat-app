@@ -132,8 +132,8 @@ export const ChatContextProvider = ({ children, user }) => {
             })
             const newChatRoom = await createNewChatRoomAPI("/", body)
 
-            setUserChats((prevUserChat) => {
-                if (prevUserChat === null) {
+            setUserChats(() => {
+                if (userChats.length === 0) {
                     return [newChatRoom]
                 } else {
                     return [...userChats, newChatRoom]
