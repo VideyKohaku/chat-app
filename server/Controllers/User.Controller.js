@@ -81,6 +81,10 @@ class UserController {
             const {email, password} = req.body;
 
             const user = await UserModel.findOne({email})
+            
+            if(!email || !password){
+                return res.status(400).json("All field are required...")
+            }
             if(!user){
                 return res.status(404).json("Email not found")
             }
@@ -116,7 +120,8 @@ class UserController {
     static async findUser(req, res){
         try{
             const {userId} = req.params;
-            const user = await UserController.#getUsers({"_id": userId});
+            const userArray = await UserController.#getUsers({"_id": userId});
+            const user = userArray[0];
 
             // console.log("user: \n", user);
             if (Object.keys(user).length === 0 || user.length === 0){

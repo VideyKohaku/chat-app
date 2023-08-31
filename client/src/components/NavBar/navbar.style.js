@@ -1,4 +1,3 @@
-import zIndex from "@mui/material/styles/zIndex"
 import theme from "../../theme"
 
 const navbar_styles = {
@@ -13,12 +12,12 @@ const navbar_styles = {
         position: "fixed",
         top: 0,
 
-        height: "10vh",
+        height: "62px",
         minHeight: "62px",
         width: "100%",
         // background: "#F4A7B9",  
         // borderBottom: "2px solid",
-        boxShadow:  "0px 0.5px 3px 2px rgba(0, 0, 0, .2)",
+        boxShadow:  "0px 0.5px 3px 2px rgba(0, 0, 0, .1)",
         zIndex:1
     },
     title: {

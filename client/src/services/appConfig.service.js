@@ -1,3 +1,7 @@
 export const baseURL = "http://localhost:5000/api"
-import axios from "axios"
+
+export const AUTH_URL = "/users"
+export const FIND_USER_URL = "/users/find"
+export const CHAT_URL = "/chats"
+export const MESSAGE_URL = "/messages"
 
