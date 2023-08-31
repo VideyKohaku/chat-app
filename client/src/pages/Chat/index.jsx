@@ -21,26 +21,42 @@ function Chat() {
   const {
     userChats,
     isUserChatsLoading,
-    userChatsError,
+    // userChatsError,
+    potentialChats,
+    createChatRoom,
+    currentChatRoom,
+    updateCurrentChat,
+    messages,
+    isMessageLoading,
+    updateSendMessage,
+    sendMessage,
+    newMessage,
   } = useContext(ChatContext)
 
-  console.log("User Chat:", userChats)
+  console.log("currentChatRoom in chat container:", currentChatRoom)
   return (
-    <>
-      {userChats?.length < 1 ? <p>No user chat found</p> : (
-        < Container className='chat-body-container'>
-          <ChatList
-            className='chat-list' 
-            isUserChatsLoading={isUserChatsLoading}
-            userChats={userChats}
-            user={user}
-          />
-          <ChatBox 
-            className='chat-box' 
-          />
-        </Container >)
-      }
-    </>
+    < Container className='chat-body-container'>
+      <ChatList
+        className='chat-list'
+        isUserChatsLoading={isUserChatsLoading}
+        userChats={userChats}
+        user={user}
+        potentialChats={potentialChats}
+        createChatRoom={createChatRoom}
+        updateCurrentChat={updateCurrentChat}
+      />
+      <ChatBox
+        className='chat-box'
+        user={user}
+        userChats={userChats}
+        currentChatRoom={currentChatRoom}
+        messages={messages}
+        isMessageLoading={isMessageLoading}
+        updateSendMessage={updateSendMessage}
+        sendMessage={sendMessage}
+        newMessage={newMessage}
+      />
+    </Container >
   )
 }
 

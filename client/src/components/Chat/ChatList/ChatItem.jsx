@@ -118,9 +118,9 @@ function ChatItem({
   userChatRoom,
   user,
 }) {
-  console.log("chatItem", userChatRoom)
+  // console.log("chatItem", userChatRoom)
   const { recipientUser } = useFetchRecipientUser(userChatRoom, user)
-  console.log("recipient user", recipientUser)
+  // console.log("recipient user", recipientUser)
   return (
     <ChatCard hoverable={true}>
       <Meta

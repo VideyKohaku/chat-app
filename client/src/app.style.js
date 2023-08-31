@@ -16,10 +16,10 @@ const app_styles = {
     bodyChat: {
         display: "flex",
         width: "100%",
-        height: "100%",
-
+        height: "calc(100% - 62px)",
+        // height: "100%",
         position: "relative",
-        top: "62px",
+        top: "31px",
 
         // margin: 0,
         marginLeft:0,
