@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useCallback } from "react";
 import { getUserChatsAPI, createNewChatRoomAPI, getMessagesAPI, createMessageAPI } from "../services/chat.service";
 import { getUsersAPI } from "../services/auth.service";
+import { io } from "socket.io-client"
 
 export const ChatContext = createContext();
 
@@ -12,13 +13,42 @@ export const ChatContextProvider = ({ children, user }) => {
     const [currentChatRoom, setCurrentChatRoom] = useState(null);
     const [isMessageLoading, setIsMessageLoading] = useState(false);
     const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState("")
+    const [newMessage, setNewMessage] = useState("");
+    const [socket, setSocket] = useState(null);
+    const [onlineUsers, setOnlineUsers] = useState([]);
 
 
     // handle send message on change
     const updateSendMessage = useCallback((content) => {
         setNewMessage(content)
     }, [])
+
+    // intial the socket
+    useEffect(() => {
+        const newSocket = io("http://localhost:3000");
+        setSocket(newSocket);
+
+        return () => {
+            newSocket.disconnect()
+        }
+    }, [user])
+
+
+
+    useEffect(() => {
+        console.log("socket:", socket)
+        if (socket == null) return;
+
+        socket.emit("addNewUser", user?.id);
+
+        socket.on("getUserOnline", (res) => {
+            setOnlineUsers(res)
+        })
+
+        return () => {
+            socket.off("getUserOnline")
+        }
+    }, [socket])
 
 
     const sendMessage = useCallback((senderId) => {
@@ -97,14 +127,14 @@ export const ChatContextProvider = ({ children, user }) => {
 
         getPotentialChats()
 
-    }, [userChats])
+    }, [userChats, user])
 
 
     // fetch messages current rooms
     useEffect(() => {
         const getMessages = async () => {
             setIsMessageLoading(true);
-            const messagesData = await getMessagesAPI(`/${currentChatRoom._id}`)
+            const messagesData = await getMessagesAPI(`/${currentChatRoom?._id}`)
             setIsMessageLoading(false);
             if (messagesData.error) {
                 console.log(messagesData.error)
@@ -123,6 +153,7 @@ export const ChatContextProvider = ({ children, user }) => {
     }, [userChats])
 
 
+    // handle create new Chat rooms
     const createChatRoom = useCallback(async (firstId, secondId) => {
         try {
             console.log(`firstId:  ${firstId}, secondId: ${secondId}`)
@@ -131,6 +162,8 @@ export const ChatContextProvider = ({ children, user }) => {
                 secondId
             })
             const newChatRoom = await createNewChatRoomAPI("/", body)
+
+            console.log("userChats in Context:", userChats)
 
             setUserChats(() => {
                 if (userChats.length === 0) {
@@ -166,6 +199,7 @@ export const ChatContextProvider = ({ children, user }) => {
             updateSendMessage,
             sendMessage,
             newMessage,
+            onlineUsers,
         }}
     >
         {children}

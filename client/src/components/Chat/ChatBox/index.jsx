@@ -141,11 +141,13 @@ function ChatBox({
     )
   }
 
+
   const clearInputMessage = () => {
     const messageInput = document.querySelector(".react-input-emoji--input");
     console.log(messageInput)
     messageInput.innerHTML = "" 
   }
+
 
   const renderFooter = () => {
     return (
@@ -154,6 +156,13 @@ function ChatBox({
           className="input-box"
           onChange={(content)=>{
             updateSendMessage(content)
+          }}
+          onKeyUp={(e) => {
+            if(e.key == "Enter"){
+              console.log("Enter pressed")
+            }else{
+              console.log(`e pressed: ${e}`)
+            }
           }}
           ></InputEmoji>
         <Button

@@ -84,23 +84,30 @@ const AvatarChat = styled.div`
   justify-content: center;
   position: absolute;
 
-  .user-online{
+  .user-status{
     width: 10px;
     height: 10px;
-    background-color: #0fcc45;
     border-radius: 50%;
     top: 12px;
     left: -10px;
-
+    
     position: relative;
+    
+    &.online{
+      background-color: #0fcc45;
+    }
+
+    &.offline{
+      opacity: 0;
+    }
   }
 `
 
-const renderAvatar = (recipientUser) => {
+const renderAvatar = (recipientUser, onlineUsers) => {
   return (
     <AvatarChat>
       <AccountCircleIcon sx={{color:"rgb(71, 145, 219)", fontSize: 40}} />
-      <span className="user-online"></span>
+      <span className={`user-status ${recipientUser && onlineUsers[recipientUser._id] ? "online" : "offline"}`}></span>
     </AvatarChat>
   )
 }
@@ -117,14 +124,15 @@ const renderTitle = (recipientUser) => {
 function ChatItem({
   userChatRoom,
   user,
+  onlineUsers,
 }) {
-  // console.log("chatItem", userChatRoom)
+  console.log("chatItem:", userChatRoom)
   const { recipientUser } = useFetchRecipientUser(userChatRoom, user)
-  // console.log("recipient user", recipientUser)
+  console.log("recipient user", recipientUser)
   return (
     <ChatCard hoverable={true}>
       <Meta
-        avatar={renderAvatar(recipientUser)}
+        avatar={renderAvatar(recipientUser, onlineUsers)}
         // title={recipientUser ? recipientUser.name : "User no name"}
         title={renderTitle(recipientUser)}
         description="This is the first message and also a super long message"

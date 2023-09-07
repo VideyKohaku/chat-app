@@ -31,6 +31,7 @@ function Chat() {
     updateSendMessage,
     sendMessage,
     newMessage,
+    onlineUsers,
   } = useContext(ChatContext)
 
   console.log("currentChatRoom in chat container:", currentChatRoom)
@@ -44,6 +45,7 @@ function Chat() {
         potentialChats={potentialChats}
         createChatRoom={createChatRoom}
         updateCurrentChat={updateCurrentChat}
+        onlineUsers={onlineUsers}
       />
       <ChatBox
         className='chat-box'
