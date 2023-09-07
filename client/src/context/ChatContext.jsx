@@ -36,7 +36,6 @@ export const ChatContextProvider = ({ children, user }) => {
 
 
     useEffect(() => {
-        console.log("socket:", socket)
         if (socket == null) return;
 
         socket.emit("addNewUser", user?.id);
@@ -54,14 +53,12 @@ export const ChatContextProvider = ({ children, user }) => {
     const sendMessage = useCallback((senderId) => {
         const createNewMessage = async () => {
             try {
-                console.log("newMessage: ", newMessage)
                 if(newMessage === "") throw "You have not enter anything"
                 const body = {
                     senderId: senderId,
                     chatRoomId: currentChatRoom._id,
                     content: newMessage
                 }
-                console.log("body in send message:", body)
                 const newMessageData = await createMessageAPI("/", body)
                 const newMessagesData = await getMessagesAPI(`/${currentChatRoom._id}`)
                 setMessages(newMessagesData)
@@ -88,7 +85,6 @@ export const ChatContextProvider = ({ children, user }) => {
                 if (chatData.error) {
                     console.log(chatData.error)
                     return setUserChatsError(chatData.error)
-
                 }
 
                 setUserChats(chatData)
@@ -107,7 +103,6 @@ export const ChatContextProvider = ({ children, user }) => {
                 return console.log(usersData.error);
             }
 
-            // console.log("usersData", usersData)
             const potentialUsers = usersData.filter((potentialUser) => {
                 let isChatCreated = false;
 
@@ -156,14 +151,11 @@ export const ChatContextProvider = ({ children, user }) => {
     // handle create new Chat rooms
     const createChatRoom = useCallback(async (firstId, secondId) => {
         try {
-            console.log(`firstId:  ${firstId}, secondId: ${secondId}`)
             const body = JSON.stringify({
                 firstId,
                 secondId
             })
             const newChatRoom = await createNewChatRoomAPI("/", body)
-
-            console.log("userChats in Context:", userChats)
 
             setUserChats(() => {
                 if (userChats.length === 0) {

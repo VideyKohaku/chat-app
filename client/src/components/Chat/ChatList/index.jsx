@@ -67,17 +67,11 @@ function ChatList({
   updateCurrentChat,
   onlineUsers,
 }) {
-  console.log("Potential Chat:", potentialChats)
-  // console.log("userChats:", userChats)
-  console.log("online user:", onlineUsers)
-
   const handleCreateChatRoom = (user, potentialChat) => () => {
-    console.log("create chat room onClick")
     createChatRoom(user.id, potentialChat._id)
   }
 
   const handleUpdateCurrentChat = (userChatRoom) => () => {
-    console.log("update current room", userChatRoom)
     updateCurrentChat(userChatRoom)
   }
 
