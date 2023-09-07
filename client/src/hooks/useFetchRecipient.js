@@ -15,7 +15,6 @@ export const useFetchRecipientUser = (chatRoom, user) => {
 
             const userData = await findUser(`/${recipientID}`)
             if (userData.error) {
-                console.log("error in fetch recipient user", userData);
                 return setError(userData.error)
             }
             setRecipientUser(userData)

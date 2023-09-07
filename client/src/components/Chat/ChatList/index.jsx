@@ -65,19 +65,16 @@ function ChatList({
   potentialChats,
   createChatRoom,
   updateCurrentChat,
+  onlineUsers,
 }) {
-  // console.log("Potential Chat:", potentialChats)
-  // console.log("userChats:", userChats)
-
   const handleCreateChatRoom = (user, potentialChat) => () => {
-    console.log("create chat room onClick")
     createChatRoom(user.id, potentialChat._id)
   }
 
   const handleUpdateCurrentChat = (userChatRoom) => () => {
-    console.log("update current room", userChatRoom)
     updateCurrentChat(userChatRoom)
   }
+
 
   return (
     <Container className="ChatList container">
@@ -89,7 +86,7 @@ function ChatList({
                 <div key={index} className="potentailChat-item-wrapper" onClick={handleCreateChatRoom(user, potentialChat)}>
                   <PotentialChatItem
                     potentialChat={potentialChat}
-
+                    isOnline={onlineUsers[potentialChat._id] ? "online-user" : ""}
                   />
                 </div>
               )
@@ -110,7 +107,9 @@ function ChatList({
                 >
                   <ChatItem
                     userChatRoom={userChatRoom}
-                    user={user} />
+                    user={user} 
+                    onlineUsers={onlineUsers}
+                  />
                 </div>
               )
             })

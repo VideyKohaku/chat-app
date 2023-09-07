@@ -107,11 +107,6 @@ function ChatBox({
   newMessage,
 }) {
   const { recipientUser } = useFetchRecipientUser(currentChatRoom, user);
-  // const [sendMessage, setSendMessage] = useState("");
-
-
-  console.log("message in chat box:", messages)
-  console.log("user in chat box:", user)
   
   const renderHeader = (currentChatRoom) => {
     return (
@@ -125,7 +120,6 @@ function ChatBox({
   }
 
   const renderBody = (messages) => {
-    // console.log("message in body", messages)
     return (
         <div className="messages-container">
           {messages && messages.map((message, index) => {
@@ -141,11 +135,12 @@ function ChatBox({
     )
   }
 
+
   const clearInputMessage = () => {
     const messageInput = document.querySelector(".react-input-emoji--input");
-    console.log(messageInput)
     messageInput.innerHTML = "" 
   }
+
 
   const renderFooter = () => {
     return (
@@ -154,6 +149,13 @@ function ChatBox({
           className="input-box"
           onChange={(content)=>{
             updateSendMessage(content)
+          }}
+          onKeyUp={(e) => {
+            if(e.key == "Enter"){
+              console.log("Enter pressed")
+            }else{
+              console.log(`e pressed: ${e}`)
+            }
           }}
           ></InputEmoji>
         <Button

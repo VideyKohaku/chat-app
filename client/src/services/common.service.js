@@ -8,17 +8,14 @@ export const postRequest = async (url, body) => {
         'Content-Type': 'application/json',
       },
     });
-    // console.log(response.data);
     return response.data;
   } catch ({ response }) {
     // Handle errors
-    // console.log("error happened: ", response);
     throw response;
   }
 }
 
 export const getRequest = async (url) => {
-  // console.log(url)
   try{
     const response = await axios.get(url)
 
