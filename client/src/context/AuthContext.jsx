@@ -20,7 +20,6 @@ export const AuthContextProvider = ({ children }) => {
     const [registerError, setRegisterError] = useState(null);
     const [isRegisterLoading, setIsRegisterLoading] = useState(null);
 
-    // console.log("user: ", user);
     useEffect(() => {
         const userStr = localStorage.getItem('user');
         setUSer(JSON.parse(userStr));
@@ -29,7 +28,6 @@ export const AuthContextProvider = ({ children }) => {
 
     // register
     const registerUser = useCallback(async (e) => {
-        // console.log("register info: ", registerInfo);
         e.preventDefault()
         setIsRegisterLoading(true);
         setRegisterError(null);
@@ -45,20 +43,17 @@ export const AuthContextProvider = ({ children }) => {
             console.log("error from register: ", error);
             setRegisterError(error.data);
             
-            // console.log("registerError", registerError);
         }
     }, [registerInfo, user, registerError])
 
 
     const updateRegisterInfo = useCallback((info) => {
-        console.log("info", info);
         setRegisterInfo(info);
     }, [])
 
 
     const togglePasswordVisible = useCallback(async (e) => {
         e.preventDefault();
-        // console.log()
         setIsPasswordVisible(!isPasswordVisible);
     },[isPasswordVisible])
 
@@ -87,8 +82,6 @@ export const AuthContextProvider = ({ children }) => {
         console.log("info", info);
         setLoginInfo(info);
     }, [])
-
-    // console.log("loginError",loginError);
 
 
     // logout
