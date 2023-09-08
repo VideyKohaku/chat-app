@@ -14,6 +14,7 @@ export const ChatContextProvider = ({ children, user }) => {
     const [isMessageLoading, setIsMessageLoading] = useState(false);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
+    const [toSentMessage, setToSentMessage] = useState("");
     const [socket, setSocket] = useState(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
 
@@ -34,7 +35,7 @@ export const ChatContextProvider = ({ children, user }) => {
     }, [user])
 
 
-
+    // get online users
     useEffect(() => {
         if (socket == null) return;
 
@@ -47,29 +48,59 @@ export const ChatContextProvider = ({ children, user }) => {
         return () => {
             socket.off("getUserOnline")
         }
-    }, [socket])
+    }, [socket, user?.id])
+
+
+    // send message real-time
+    useEffect(() => {
+        if (socket === null) return;
+
+        const recipientId = currentChatRoom?.members?.find((memberId) => memberId != user?.id)
+
+        socket.emit("sendMessage", { ...toSentMessage, recipientId })
+    }, [toSentMessage, currentChatRoom?.members, user?.id, socket])
+
+
+    // receive message real-time
+    useEffect(() => {
+        if (socket == null) return;
+
+        socket.on("getMessage", (messageRes) => {
+            if (currentChatRoom._id !== messageRes.chatRoomId) return;
+
+            setMessages((prev) => [...prev, messageRes])
+        })
+
+        // clean up function
+        return () => {
+            socket.off("getMessage")
+        }
+    }, [socket, currentChatRoom])
+
 
 
     const sendMessage = useCallback((senderId) => {
         const createNewMessage = async () => {
             try {
-                if(newMessage === "") throw "You have not enter anything"
+                if (newMessage === "") throw "You have not enter anything"
                 const body = {
                     senderId: senderId,
                     chatRoomId: currentChatRoom._id,
                     content: newMessage
                 }
                 const newMessageData = await createMessageAPI("/", body)
-                const newMessagesData = await getMessagesAPI(`/${currentChatRoom._id}`)
-                setMessages(newMessagesData)
+                setToSentMessage(newMessageData)
+                setMessages((prev) => [...prev, newMessageData])
+
                 return newMessageData
             } catch (error) {
                 console.log("error in send message: ", error)
             }
         }
 
+
         createNewMessage()
-    }, [newMessage, currentChatRoom])
+    }, [newMessage, currentChatRoom, socket])
 
 
     // handle logic when get UserChat

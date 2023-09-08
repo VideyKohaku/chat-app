@@ -171,7 +171,7 @@ function ChatBox({
     )
   }
 
-  console.log("currentChat:", currentChatRoom)
+  // console.log("currentChat:", currentChatRoom)
   return (
     <Container className="ChatBox container">
       {renderHeader(currentChatRoom)}

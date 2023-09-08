@@ -7,10 +7,9 @@ const io = new Server({
 
 let onlineUsers = {}
 
+// listen to connection
 io.on("connection", (socket) => {
-    console.log("new connection with socketID: ", socket.id)
-
-    // listen to connection
+    // event: add user
     socket.on("addNewUser", (userId) => {
         console.log("not have user:", onlineUsers[userId] && onlineUsers[userId].userId)
         if (!(onlineUsers[userId] && onlineUsers[userId].userId) && userId != null) {
@@ -22,15 +21,22 @@ io.on("connection", (socket) => {
                 }
             }
         }
-        console.log("Online user:", onlineUsers)
 
         io.emit("getUserOnline", onlineUsers)
     })
+   
     
+    // event: send message
+    socket.on("sendMessage", (message) => {
+        const recipientUser = onlineUsers[message.recipientId]
+        if (recipientUser) {
+            io.to(recipientUser.socketId).emit("getMessage", message)
+        }
+    })
+
 
     // listen to disconnection
     socket.on("disconnect", () => {
-        console.log("socket to be disconnect: ", socket)
         onlineUsers = removeSocket(onlineUsers, socket.id)
         console.log("after trim online users:", onlineUsers)
         io.emit("getUserOnline", onlineUsers)

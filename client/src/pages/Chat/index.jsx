@@ -34,7 +34,7 @@ function Chat() {
     onlineUsers,
   } = useContext(ChatContext)
 
-  console.log("currentChatRoom in chat container:", currentChatRoom)
+  // console.log("currentChatRoom in chat container:", currentChatRoom)
   return (
     < Container className='chat-body-container'>
       <ChatList
