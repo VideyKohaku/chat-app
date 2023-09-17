@@ -1,3 +1,4 @@
+import { forwardRef } from "react"
 import styled from "styled-components"
 import { Headline01 } from "../../../assets/styles/common"
 import { Tooltip } from "antd"
@@ -41,9 +42,9 @@ const Container = styled.div`
     }
 `
 
-function Message({ className, message }) {
+const Message = forwardRef(function Message({ className, message}, ref) {
     return (
-        <Container className={`${className}-container`}>
+        <Container className={`${className}-container`} ref={ref}>
             <Tooltip placement="leftTop" title={moment(message.createdAt).calendar()}>
                 <div className={`${className}-content message`}>
                     <Headline01>{message.content}</Headline01>
@@ -51,6 +52,6 @@ function Message({ className, message }) {
             </Tooltip>
         </Container>
     )
-}
+})
 
 export default Message

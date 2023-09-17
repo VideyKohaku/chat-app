@@ -6,6 +6,7 @@ import InputEmoji from "react-input-emoji"
 import Message from "./Message"
 import { Button } from "antd"
 import SendIcon from '@mui/icons-material/Send';
+import { useEffect, useRef } from "react"
 
 const Container = styled.div`
   display: grid;
@@ -107,7 +108,16 @@ function ChatBox({
   newMessage,
 }) {
   const { recipientUser } = useFetchRecipientUser(currentChatRoom, user);
-  
+  const scroll = useRef(null)
+
+  useEffect(() => {
+    scroll.current?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }, [messages])
+
+
+
   const renderHeader = (currentChatRoom) => {
     return (
       <ChatBoxHeader className="ChaBox header">
@@ -119,49 +129,50 @@ function ChatBox({
     )
   }
 
-  const renderBody = (messages) => {
+  const renderBody = (messages, scrollRef) => {
     return (
-        <div className="messages-container">
-          {messages && messages.map((message, index) => {
-            return (
-              <Message 
-                key={index}
-                className={message.senderId === user.id ? "user-message" : "recipient-message"}
-                message={message}
-              />
-            )
-          })}
-        </div>
+      <div className="messages-container">
+        {messages && messages.map((message, index) => {
+          return (
+            <Message
+              key={index}
+              className={message.senderId === user.id ? "user-message" : "recipient-message"}
+              message={message}
+              ref={scrollRef}
+            />
+          )
+        })}
+      </div>
     )
   }
 
 
   const clearInputMessage = () => {
     const messageInput = document.querySelector(".react-input-emoji--input");
-    messageInput.innerHTML = "" 
+    messageInput.innerHTML = ""
   }
 
 
   const renderFooter = () => {
     return (
       <div className="footer">
-        <InputEmoji 
+        <InputEmoji
           className="input-box"
-          onChange={(content)=>{
+          onChange={(content) => {
             updateSendMessage(content)
           }}
           onKeyUp={(e) => {
-            if(e.key == "Enter"){
+            if (e.key == "Enter") {
               console.log("Enter pressed")
-            }else{
+            } else {
               console.log(`e pressed: ${e}`)
             }
           }}
-          ></InputEmoji>
+        ></InputEmoji>
         <Button
           className="button"
           type="link"
-          icon={<SendIcon className="send-icon" fontSize="medium"/>}
+          icon={<SendIcon className="send-icon" fontSize="medium" />}
           onClick={() => {
             sendMessage(user.id, newMessage)
             clearInputMessage()
@@ -178,7 +189,7 @@ function ChatBox({
       <div className="ChatBox content">
         {
           isMessageLoading ? <BaseHeadline>Loading messages</BaseHeadline> : (
-            renderBody(messages)
+            renderBody(messages, scroll)
           )
         }
       </div>

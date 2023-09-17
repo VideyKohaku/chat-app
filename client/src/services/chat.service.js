@@ -22,8 +22,6 @@ const getUserChatsAPI = async (endpoint = "/") => {
 const createNewChatRoomAPI = async (endpoint = "/", body) => {
     try {
         const url = chatPath + endpoint
-        console.log("body", body)
-        console.log("url in create new chat room:", url);
         const newChatRoom = await postRequest(url, body);
         return newChatRoom
     } catch (error) {
